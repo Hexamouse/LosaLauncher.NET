@@ -1,0 +1,70 @@
+<Window x:Class="GameLauncher.CustomMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CustomMessageBox" Height="200" Width="420"
+        WindowStyle="None" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterOwner">
+
+    <Border Background="#E61E1E2F" CornerRadius="8" BorderBrush="#22FFFFFF" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="Black" Opacity="0.5" BlurRadius="10"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#19FFFFFF" MouseDown="TitleBar_MouseDown">
+                <TextBlock x:Name="TitleText" Text="ERROR" Foreground="#E81123" FontWeight="Bold"
+                           Margin="15,8" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
+            </Grid>
+
+            <Grid Grid.Row="1" VerticalAlignment="Center" Margin="20,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Viewbox Grid.Column="0" Width="40" Height="40" Margin="0,0,20,0">
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="#E81123" Data="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M13,17H11V15H13V17M13,13H11V7H13V13Z" />
+                    </Canvas>
+                </Viewbox>
+
+                <TextBlock Grid.Column="1" x:Name="MessageText" Text="This is a sample error message that is long enough to wrap to the next line."
+                           Foreground="#DDD" FontSize="14" TextWrapping="Wrap"
+                           VerticalAlignment="Center"/>
+            </Grid>
+
+            <Button Grid.Row="2" x:Name="OkButton" Content="OK" Margin="0,10,20,15"
+                    HorizontalAlignment="Right" Padding="35,8" Click="OkButton_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#44E81123"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="#E81123"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E81123"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+    </Border>
+</Window>
