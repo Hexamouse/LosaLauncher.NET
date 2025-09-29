@@ -10,25 +10,24 @@ namespace GameLauncher
 {
     public static class SeedEncryptor
     {
-        // IV (Initialization Vector) yang sama persis dengan di kode C++ (NT_KOREA)
+        // IV (Initialization Vector) (NT_KOREA)
         private static readonly byte[] iv = new byte[] 
         {
             56, 170, 255, 3, 4, 78, 6, 54, 8, 222, 10, 123, 19, 88, 14, 1
         };
 
-        // DATA_LEN dan SEED_USER_KEY_LEN dari C++, biasanya 16 atau 32. Kita asumsikan 16 untuk key.
+        // DATA_LEN & SEED_USER_KEY_LEN
         private const int SEED_USER_KEY_LEN = 16;
-        private const int DATA_LEN = 256; // Ukuran buffer tetap seperti di C++
+        private const int DATA_LEN = 256; // BUFFER
 
         public static string Encode15(string plainText, string userKey)
         {
-            // Konversi input string ke byte array menggunakan encoding standar
+           // ENCODING
             byte[] keyBytes = Encoding.ASCII.GetBytes(userKey);
             byte[] plainBytes = Encoding.ASCII.GetBytes(plainText);
 
             if (plainBytes.Length >= DATA_LEN)
             {
-                // Meniru pengecekan batas panjang dari C++
                 throw new ArgumentException("Plaintext is too long.", nameof(plainText));
             }
 
@@ -37,37 +36,28 @@ namespace GameLauncher
                 throw new ArgumentException("UserKey is too long.", nameof(userKey));
             }
 
-            // Kunci harus memiliki panjang tepat 16 byte (128 bit) untuk SEED
-            // Jika lebih pendek, kita pad dengan nol, meniru perilaku C++
+            // KEY 128 BIT
             byte[] finalKeyBytes = new byte[SEED_USER_KEY_LEN];
             Array.Copy(keyBytes, finalKeyBytes, keyBytes.Length);
 
-            // Membuat cipher SEED dengan mode CFB (Cipher Feedback) dan tanpa padding,
-            // sama persis seperti di C++. Ukuran blok feedback adalah 128 bit.
+            // BLOCK CHIPER 128 BIT
             var seedEngine = new SeedEngine();
             var cfbCipher = new CfbBlockCipher(seedEngine, 128); 
             IBufferedCipher cipher = new BufferedBlockCipher(cfbCipher);
 
-            // Siapkan parameter kunci dan IV
+            // PARAMETER KEY
             var keyParam = new KeyParameter(finalKeyBytes);
             var parameters = new ParametersWithIV(keyParam, iv);
 
-            // Inisialisasi cipher untuk enkripsi
             cipher.Init(true, parameters);
 
             // =========================================================================
-            // BAGIAN PENTING: Meniru perilaku C++ yang menggunakan buffer ukuran tetap
-            // 1. Buat buffer dengan ukuran DATA_LEN
+            // BUFFER SIZE DATA_LEN
             byte[] bufferToEncrypt = new byte[DATA_LEN];
-            // 2. Salin plaintext ke dalam buffer tersebut
             Array.Copy(plainBytes, bufferToEncrypt, plainBytes.Length);
-            // 3. Enkripsi seluruh buffer
+            // ENCRYPT ALL BUFFER
             byte[] encryptedBuffer = cipher.DoFinal(bufferToEncrypt);
             // =========================================================================
-
-            // Konversi hasil enkripsi (byte array) ke string heksadesimal (lowercase)
-            // PENTING: Kode C++ hanya mengambil sebagian dari hasil enkripsi,
-            // yaitu sepanjang plaintext aslinya. Kita harus menirunya.
             var hexString = new StringBuilder(plainBytes.Length * 2);
             for (int i = 0; i < plainBytes.Length; i++)
             {
