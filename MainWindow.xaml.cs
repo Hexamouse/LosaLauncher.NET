@@ -88,14 +88,14 @@ namespace GameLauncher
 
                 if (client.DefaultRequestHeaders.Authorization == null)
                 {
-                    string mainkey = "localsx";
-                    string apikey = "sXhADM9lO1fKcD7";
+                    string mainkey = "YOUR_APIKEY"; // APIKEY
+                    string apikey = "YOUR_ENCODE";  // ENCODE KEY ( CHECK YOUR DB )
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", mainkey + apikey);
                     client.DefaultRequestHeaders.Add("User-Agent", "csharp-launcher/1.0");
                     client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
                 }
 
-                string url = "http://192.168.1.100:3303/api/sntl_launcher";
+                string url = "http://192.168.1.100:3303/api/launcher"; // ENDPOINT API LAUNCHER
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -172,7 +172,7 @@ namespace GameLauncher
         {
             try
             {
-                string forgotPasswordUrl = "http://your-website.com/forgot-password";
+                string forgotPasswordUrl = "http://localhost:3000/forgot-password";
                 Process.Start(new ProcessStartInfo(forgotPasswordUrl) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -181,13 +181,11 @@ namespace GameLauncher
             }
         }
 
-        // ===== METHOD CHECKER SUDAH DIUBAH MENJADI DISCORD =====
         private void DiscordButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Ganti dengan link invite server Discord Anda
-                string discordInviteUrl = "https://discord.gg/pdwp89Kgwe";
+                string discordInviteUrl = "";
                 Process.Start(new ProcessStartInfo(discordInviteUrl) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -195,7 +193,6 @@ namespace GameLauncher
                 CustomMessageBox.Show("Error", $"Could not open the link: {ex.Message}");
             }
         }
-        // =======================================================
 
         #region UI Logic
 
