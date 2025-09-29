@@ -13,7 +13,6 @@ namespace GameLauncher
             MessageText.Text = message;
         }
 
-        // Metode statis untuk mempermudah pemanggilan
         public static void Show(string title, string message)
         {
             var msgBox = new CustomMessageBox(title, message);
